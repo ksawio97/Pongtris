@@ -1,5 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class BoxesManager : MonoBehaviour
@@ -10,6 +10,13 @@ public class BoxesManager : MonoBehaviour
     private List<GameObject> boxes;
 
     private Vector2 camSize;
+
+    private float moveAmount;
+    private Vector3 moveVec;
+    private float moved;
+
+    Vector3[] boxSpawnPositions;
+
     void Start()
     {
         //cam size 5.625 10
@@ -19,20 +26,89 @@ public class BoxesManager : MonoBehaviour
         camSize = new Vector2(cam.orthographicSize * 2 * aspectRatio, cam.orthographicSize * 2);
 
         boxes = new List<GameObject>();
-    }
 
-    private void GenerateBoxes()
-    {
-        for (int i = 0; i < 5; i++)
+        moveAmount = camSize.x / 5;
+        moveVec = new Vector2(0, camSize.x / 5 / 150);
+        moved = moveAmount;
+
+        boxSpawnPositions = new Vector3[5];
+
+        for(int i = 0; i < boxSpawnPositions.Length; i++)
         {
-            boxes.Add(Instantiate(boxPrefab) as GameObject);
-            boxes[i].transform.position = new Vector3(camSize.x / 5 * i + camSize.x / 5 / 2 - camSize.x / 2, camSize.y / 2 - camSize.x / 5 / 2);
-            boxes[i].GetComponent<OnDestroyDispatcher>().Dispatcher = (GameObject value) => { boxes.Remove(value); };
+            boxSpawnPositions[i] = new Vector3(camSize.x / 5 * i + camSize.x / 5 / 2 - camSize.x / 2, camSize.y / 2 + camSize.x / 5 / 2);
         }
     }
+
     void FixedUpdate()
     {
         if (boxes.Count == 0)
             GenerateBoxes();
+        TryMoveBoxes();
+    }
+
+    private void GenerateBoxes()
+    {
+        int last;
+
+        int SkipPosCount() => Random.Range(0, 3);
+        int[] toSkip = GetRandomPosToSkip(SkipPosCount());
+
+        for (int i = 0; i < boxSpawnPositions.Length; i++)
+        {
+            if (toSkip.Contains(i))
+                continue;
+
+            boxes.Add(Instantiate(boxPrefab) as GameObject);
+            last = boxes.Count - 1;
+
+            boxes[last].transform.position = boxSpawnPositions[i];
+            boxes[last].GetComponent<OnDestroyDispatcher>().Dispatcher = (GameObject value) => { boxes.Remove(value); };
+        }
+
+        StartMoving();
+    }
+
+    private int[] GetRandomPosToSkip(int count)
+    {
+        int[] toSkip = new int[count];
+        int randomPos() => Random.Range(0, boxSpawnPositions.Length);
+        int drawnNum;
+
+        for(int i = 0; i < count;)
+        {
+            drawnNum = randomPos();
+            if (!toSkip.Contains(drawnNum))
+                toSkip[i++] = drawnNum;
+        }
+
+        return toSkip;
+    }
+
+    private void StartMoving()
+    {
+        moved = 0;
+    }
+
+    private void TryMoveBoxes()
+    {
+        bool CheckIfYouNeedToMove() => moved < moveAmount;
+
+        if (CheckIfYouNeedToMove())
+        {
+            moved += moveVec.y;
+            MoveBoxes();
+        }
+        else
+        {
+            GenerateBoxes();
+        }
+    }
+
+    private void MoveBoxes()
+    {
+        foreach(var box in boxes)
+        {
+            box.transform.position -= moveVec;
+        }
     }
 }
