@@ -1,21 +1,17 @@
-using Assets.Scripts;
-using System;
 using UnityEngine;
 
 public class Box : MonoBehaviour
 {
-    private bool specialBox;
+    private bool _specialBox;
+
+    public bool specialBoxSet { set { _specialBox = value; } }
+
     private float colorTimer = 0;
 
     private SpriteRenderer spr;
 
     void Start()
-    {
-        //0 - 9 
-        int rNum() => UnityEngine.Random.Range(0, 10);
-
-        specialBox = rNum() == 0;
-
+    {   
         spr = GetComponent<SpriteRenderer>();
         spr.color = UnityEngine.Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
     }
@@ -34,14 +30,8 @@ public class Box : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (specialBox)
+        if (_specialBox)
             SpecialColors();
-    }
-
-    private void OnDestroy()
-    {
-        if (specialBox)
-            EffectsController.DoRandomEffect();
     }
 
     private void OnCollisionExit2D(Collision2D coll)

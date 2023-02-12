@@ -43,3 +43,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Box
+    uniqueID: 3971179157
+    locked: 0
+  - name: Player
+    uniqueID: 1723220043
+    locked: 0
+  - name: Ball
+    uniqueID: 2385514743
+    locked: 0

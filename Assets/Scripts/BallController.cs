@@ -8,7 +8,9 @@ public class BallController : MonoBehaviour
     private float maxTotalSpeed;
 
     [SerializeField] 
-    private GameObject player;
+    private GameObject _player;
+
+    public GameObject playerSet { set { _player = value; } }
 
     private float playerHalfSize;
     private float speedPerDegree;
@@ -21,7 +23,7 @@ public class BallController : MonoBehaviour
 
         maxTotalSpeed = 0.2f;
 
-        playerHalfSize = player.GetComponent<BoxCollider2D>().bounds.size.x / 2;
+        playerHalfSize = _player.GetComponent<BoxCollider2D>().bounds.size.x / 2;
 
         int pieces = 45;
         speedPerDegree = moveAmount.y / pieces;
@@ -37,7 +39,7 @@ public class BallController : MonoBehaviour
 
     public void OnPlayerHit()
     {
-        float distanceFromCenter = Mathf.Abs(player.transform.position.x - transform.position.x);
+        float distanceFromCenter = Mathf.Abs(_player.transform.position.x - transform.position.x);
 
         float inRangeDegree(float num) => num / pieceLength < 45 ? num / pieceLength : 45;
         float newSpeedX = inRangeDegree(distanceFromCenter) * speedPerDegree;
@@ -45,7 +47,7 @@ public class BallController : MonoBehaviour
         int direction = - PositiveOrNegative(moveAmount.y);
         moveAmount.y = (maxTotalSpeed - newSpeedX) * direction;
 
-        if (player.transform.position.x <= transform.position.x)
+        if (_player.transform.position.x <= transform.position.x)
             moveAmount.x = newSpeedX;
         else
             moveAmount.x = -newSpeedX;

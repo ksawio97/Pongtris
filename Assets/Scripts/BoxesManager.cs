@@ -1,3 +1,4 @@
+using Assets.Scripts;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -58,14 +59,29 @@ public class BoxesManager : MonoBehaviour
             if (toSkip.Contains(i))
                 continue;
 
-            boxes.Add(Instantiate(boxPrefab) as GameObject);
+            boxes.Add(Instantiate(boxPrefab));
             last = boxes.Count - 1;
 
             boxes[last].transform.position = boxSpawnPositions[i];
-            boxes[last].GetComponent<OnDestroyDispatcher>().Dispatcher = (GameObject value) => { boxes.Remove(value); };
-        }
 
+            boxes[last].GetComponent<OnDestroyActions>().DispatcherSet = 
+                (GameObject value) => { boxes.Remove(value); };
+
+            //Makes box special
+            bool isSpecial = IsBoxSpecial();
+            boxes[last].GetComponent<Box>().specialBoxSet = isSpecial;
+
+            if (isSpecial)
+                boxes[last].GetComponent<OnDestroyActions>().DestroyEffectSet = GetComponent<EffectsController>().DoRandomEffect;
+        }
         StartMoving();
+    }
+
+    private static int rNum() => UnityEngine.Random.Range(0, 10);
+
+    private bool IsBoxSpecial()
+    {
+        return rNum() == 0;
     }
 
     private int[] GetRandomPosToSkip(int count)

@@ -3,26 +3,32 @@ using System;
 
 namespace Assets.Scripts
 {
-    public static class EffectsController
+    public class EffectsController :MonoBehaviour
     {
+        [SerializeField]
+        private GameObject ballPrefab;
 
-        private static Action[] effects = new Action[]
-        {
-        CreateBall,
-        Explode
-        };
+        [SerializeField]
+        private GameObject player;
 
-        public static void DoRandomEffect()
+        private Action<Vector3>[] effects;
+        void Start()
         {
-            effects[UnityEngine.Random.Range(0, effects.Length)]();
+            effects = new Action<Vector3>[]{CreateBall, Explode};
+        }
+        public void DoRandomEffect(Vector3 pos)
+        {
+            effects[UnityEngine.Random.Range(0, effects.Length)](pos);
         }
 
-        private static void CreateBall()
+        private void CreateBall(Vector3 pos)
         {
-            Debug.Log("New Ball!");
+            var ball = Instantiate(ballPrefab);
+            ball.transform.position = pos;
+            ball.GetComponent<BallController>().playerSet = player;
         }
 
-        private static void Explode()
+        private void Explode(Vector3 pos)
         {
             Debug.Log("Explosion!");
         }
