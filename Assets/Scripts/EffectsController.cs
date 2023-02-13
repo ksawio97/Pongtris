@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using System.Runtime.CompilerServices;
 
 namespace Assets.Scripts
 {
@@ -30,7 +31,21 @@ namespace Assets.Scripts
 
         private void Explode(Vector3 pos)
         {
-            Debug.Log("Explosion!");
+            void CreateExposionObject()
+            {
+                var explosion = new GameObject();
+
+                explosion.name = "Explosion";
+                explosion.tag = "Explosion";
+                explosion.transform.position = pos;
+
+                explosion.AddComponent<CircleCollider2D>().radius = 2;
+                explosion.GetComponent<CircleCollider2D>().isTrigger = true;
+                explosion.AddComponent<Rigidbody2D>().gravityScale = 0;
+
+                Destroy(explosion, 0.5f);
+            }
+            CreateExposionObject();
         }
     }
 }

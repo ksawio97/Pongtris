@@ -33,6 +33,11 @@ public class Box : MonoBehaviour
         if (_specialBox)
             SpecialColors();
     }
+    private void OnTriggerStay2D(Collider2D coll)
+    {
+        if (coll.transform.CompareTag("Explosion"))
+            Destroy(gameObject);
+    }
 
     private void OnCollisionExit2D(Collision2D coll)
     {
