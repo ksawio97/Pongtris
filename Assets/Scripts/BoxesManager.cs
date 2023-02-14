@@ -1,12 +1,16 @@
 using Assets.Scripts;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
 public class BoxesManager : MonoBehaviour
 {
     [SerializeField]
     private GameObject boxPrefab;
+
+    [SerializeField]
+    private ScoreHandler scoreHandler;
 
     private List<GameObject> boxes;
 
@@ -63,6 +67,9 @@ public class BoxesManager : MonoBehaviour
             last = boxes.Count - 1;
 
             boxes[last].transform.position = boxSpawnPositions[i];
+
+            boxes[last].GetComponent<OnDestroyActions>().PointsAddSet =
+                () => { scoreHandler.pointsAdd = 10; };
 
             boxes[last].GetComponent<OnDestroyActions>().DispatcherSet = 
                 (GameObject value) => { boxes.Remove(value); };
