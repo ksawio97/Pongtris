@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         transform.position = new Vector3(GetValidPos(), transform.position.y);
+        Debug.Log(UnityEditor.EditorApplication.isRemoteConnected);
     }
 
     float GetValidPos()

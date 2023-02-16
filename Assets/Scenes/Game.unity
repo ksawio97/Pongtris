@@ -159,7 +159,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.16389284, g: 0.20655087, b: 0.2735849, a: 0}
+  m_BackGroundColor: {r: 0.41960785, g: 0.3647059, b: 0.8156863, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -187,7 +187,7 @@ Camera:
   m_TargetEye: 0
   m_HDR: 1
   m_AllowMSAA: 0
-  m_AllowDynamicResolution: 0
+  m_AllowDynamicResolution: 1
   m_ForceIntoRT: 0
   m_OcclusionCulling: 0
   m_StereoConvergence: 10
@@ -273,10 +273,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 6637585030042618085, guid: 72de93c7adf5a56498617fb4141e7ef9, type: 3}
-      propertyPath: player
-      value: 
-      objectReference: {fileID: 1160651401}
-    - target: {fileID: 6637585030042618085, guid: 72de93c7adf5a56498617fb4141e7ef9, type: 3}
       propertyPath: _player
       value: 
       objectReference: {fileID: 1160651401}
@@ -326,10 +322,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6637585030042618110, guid: 72de93c7adf5a56498617fb4141e7ef9, type: 3}
       propertyPath: m_Name
-      value: Ball
-      objectReference: {fileID: 0}
-    - target: {fileID: 6637585030042618110, guid: 72de93c7adf5a56498617fb4141e7ef9, type: 3}
-      propertyPath: m_TagString
       value: Ball
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -408,7 +400,7 @@ SpriteRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.1764706, g: 0.14509805, b: 0.39215687, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

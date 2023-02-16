@@ -60,7 +60,7 @@ public class BallController : MonoBehaviour
         else
             moveAmount.y = -moveAmount.y;
 
-        moveAmount = new Vector3(PositiveOrNegative(moveAmount.x) * defaultMoveAmount.x, PositiveOrNegative(moveAmount.y) * defaultMoveAmount.y);
+        //moveAmount = new Vector3(PositiveOrNegative(moveAmount.x) * defaultMoveAmount.x, PositiveOrNegative(moveAmount.y) * defaultMoveAmount.y);
     }
     private void OnGameEnd()
     {
