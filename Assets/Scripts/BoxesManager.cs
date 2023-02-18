@@ -84,7 +84,7 @@ public class BoxesManager : MonoBehaviour
         StartMoving();
     }
 
-    private static int rNum() => UnityEngine.Random.Range(0, 10);
+    private static int rNum() => Random.Range(0, 10);
 
     private bool IsBoxSpecial()
     {

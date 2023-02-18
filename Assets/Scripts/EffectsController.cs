@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System;
-using System.Runtime.CompilerServices;
+using System.Collections;
 
 namespace Assets.Scripts
 {
@@ -8,6 +8,9 @@ namespace Assets.Scripts
     {
         [SerializeField]
         private GameObject ballPrefab;
+
+        [SerializeField]
+        private GameObject explosionPrefab;
 
         [SerializeField]
         private GameObject player;
@@ -31,21 +34,18 @@ namespace Assets.Scripts
 
         private void Explode(Vector3 pos)
         {
-            void CreateExposionObject()
-            {
-                var explosion = new GameObject();
+            var explosion = Instantiate(explosionPrefab);
+            explosion.transform.position = pos;
 
-                explosion.name = "Explosion";
-                explosion.tag = "Explosion";
-                explosion.transform.position = pos;
+            StartCoroutine("DisableExplosionTrigger", explosion.GetComponent<CircleCollider2D>());
+            Destroy(explosion, 2);
+        }
 
-                explosion.AddComponent<CircleCollider2D>().radius = 2;
-                explosion.GetComponent<CircleCollider2D>().isTrigger = true;
-                explosion.AddComponent<Rigidbody2D>().gravityScale = 0;
+        IEnumerator DisableExplosionTrigger(CircleCollider2D explosionCollider)
+        {
+            yield return new WaitForSeconds(0.3f);
 
-                Destroy(explosion, 0.5f);
-            }
-            CreateExposionObject();
+            explosionCollider.enabled = false;
         }
     }
 }

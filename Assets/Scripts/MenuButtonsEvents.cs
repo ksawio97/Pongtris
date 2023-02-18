@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class ButtonsEvents : MonoBehaviour
+public class MenuButtonsEvents : MonoBehaviour
 {
     [SerializeField]
     private Button playButton;

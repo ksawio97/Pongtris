@@ -5,7 +5,6 @@ public class PlayerController : MonoBehaviour
     float[] posLimits;
     void Start()
     {
-        Debug.Log(Camera.main.orthographicSize);
         float maxPosX = Camera.main.orthographicSize / 2 - GetComponent<BoxCollider2D>().size.x / 2;
         float minPosX = -maxPosX;
         posLimits = new []{minPosX, maxPosX};
@@ -15,7 +14,6 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         transform.position = new Vector3(GetValidPos(), transform.position.y);
-        Debug.Log(UnityEditor.EditorApplication.isRemoteConnected);
     }
 
     float GetValidPos()

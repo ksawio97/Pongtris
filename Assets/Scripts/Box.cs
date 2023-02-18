@@ -36,7 +36,10 @@ public class Box : MonoBehaviour
     private void OnTriggerStay2D(Collider2D coll)
     {
         if (coll.transform.CompareTag("Explosion"))
+        {
             Destroy(gameObject);
+            Debug.Log("Destroyed by explosion");
+        }
     }
 
     private void OnCollisionExit2D(Collision2D coll)

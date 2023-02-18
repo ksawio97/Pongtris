@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class SetBorders : MonoBehaviour
 {
-    private static readonly float additionalSpace = 0.3f;
+    private static readonly float additionalSpace = 0.5f;
 
     [SerializeField]
     private BoxCollider2D[] Borders;
