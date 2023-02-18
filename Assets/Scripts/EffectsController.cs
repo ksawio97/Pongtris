@@ -15,6 +15,9 @@ namespace Assets.Scripts
         [SerializeField]
         private GameObject player;
 
+        [SerializeField]
+        private GameOverController gameOverController;
+
         private Action<Vector3>[] effects;
         void Start()
         {
@@ -30,6 +33,7 @@ namespace Assets.Scripts
             var ball = Instantiate(ballPrefab);
             ball.transform.position = pos;
             ball.GetComponent<BallController>().playerSet = player;
+            ball.GetComponent<BallController>().gameOverControllerSet = gameOverController;
         }
 
         private void Explode(Vector3 pos)
@@ -38,14 +42,14 @@ namespace Assets.Scripts
             explosion.transform.position = pos;
 
             StartCoroutine("DisableExplosionTrigger", explosion.GetComponent<CircleCollider2D>());
-            Destroy(explosion, 2);
+            Destroy(explosion, explosion.GetComponent<ParticleSystem>().main.startLifetime.constantMax);
         }
 
         IEnumerator DisableExplosionTrigger(CircleCollider2D explosionCollider)
         {
             yield return new WaitForSeconds(0.3f);
-
-            explosionCollider.enabled = false;
+            if (explosionCollider != null)
+                explosionCollider.enabled = false;
         }
     }
 }

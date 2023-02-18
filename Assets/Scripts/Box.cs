@@ -10,6 +10,8 @@ public class Box : MonoBehaviour
 
     private float colorTimer = 0;
 
+    public bool destroyedFromGameObject;
+
     void Start()
     {   
         spr = GetComponent<SpriteRenderer>();
@@ -18,6 +20,7 @@ public class Box : MonoBehaviour
 
     private void SpecialColors()
     {
+        destroyedFromGameObject = false;
         colorTimer += Time.deltaTime;
 
         if (colorTimer >= 1f)
@@ -37,13 +40,14 @@ public class Box : MonoBehaviour
     {
         if (coll.transform.CompareTag("Explosion"))
         {
+            destroyedFromGameObject = true;
             Destroy(gameObject);
-            Debug.Log("Destroyed by explosion");
         }
     }
 
     private void OnCollisionExit2D(Collision2D coll)
     {
+        destroyedFromGameObject = true;
         Destroy(gameObject);
     }
 }

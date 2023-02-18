@@ -7,10 +7,15 @@ public class BallController : MonoBehaviour
 
     private float maxTotalSpeed;
 
-    [SerializeField] 
+    [SerializeField]
     private GameObject _player;
 
     public GameObject playerSet { set { _player = value; } }
+
+    [SerializeField]
+    private GameOverController _gameOverController;
+
+    public GameOverController gameOverControllerSet {set { _gameOverController = value;  }}
 
     private float playerHalfSize;
     private float speedPerDegree;
@@ -18,12 +23,15 @@ public class BallController : MonoBehaviour
 
     void Start()
     {
+        _gameOverController.BallCreated();
+
         defaultMoveAmount = new Vector3(0.1f, 0.1f);
         moveAmount = defaultMoveAmount;
 
         maxTotalSpeed = 0.2f;
 
-        playerHalfSize = _player.GetComponent<BoxCollider2D>().bounds.size.x / 2;
+        if (_player != null)
+            playerHalfSize = _player.GetComponent<BoxCollider2D>().bounds.size.x / 2;
 
         int pieces = 45;
         speedPerDegree = moveAmount.y / pieces;
@@ -62,9 +70,9 @@ public class BallController : MonoBehaviour
 
         //moveAmount = new Vector3(PositiveOrNegative(moveAmount.x) * defaultMoveAmount.x, PositiveOrNegative(moveAmount.y) * defaultMoveAmount.y);
     }
-    private void OnGameEnd()
+
+    private void OnDestroy()
     {
-        moveAmount = new Vector3(0.1f, 0.1f);
-        transform.position = new Vector3(0, 0);
+        _gameOverController.BallDestroyed();
     }
 }

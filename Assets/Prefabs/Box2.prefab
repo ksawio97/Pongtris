@@ -137,3 +137,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8624cacbbf76591419d27c29bce5cd95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  boxDestroyedParticlesPrefab: {fileID: 2665675449750453125, guid: d4e985fd9f5cdf943818719ab5c23eb6, type: 3}

@@ -276,6 +276,14 @@ PrefabInstance:
       propertyPath: _player
       value: 
       objectReference: {fileID: 1160651401}
+    - target: {fileID: 6637585030042618085, guid: 72de93c7adf5a56498617fb4141e7ef9, type: 3}
+      propertyPath: gameOverController
+      value: 
+      objectReference: {fileID: 1340487873}
+    - target: {fileID: 6637585030042618085, guid: 72de93c7adf5a56498617fb4141e7ef9, type: 3}
+      propertyPath: _gameOverController
+      value: 
+      objectReference: {fileID: 1340487873}
     - target: {fileID: 6637585030042618104, guid: 72de93c7adf5a56498617fb4141e7ef9, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -688,8 +696,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1340487872}
   - component: {fileID: 1340487871}
+  - component: {fileID: 1340487873}
   m_Layer: 0
-  m_Name: SetBorders
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -731,6 +740,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1340487873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1340487870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccfb3150b1f5d0b40a4df397f0645f09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scoreHandler: {fileID: 1198368271}
 --- !u!1 &1479725241
 GameObject:
   m_ObjectHideFlags: 0
@@ -1010,3 +1032,4 @@ MonoBehaviour:
   ballPrefab: {fileID: 6637585030042618110, guid: 72de93c7adf5a56498617fb4141e7ef9, type: 3}
   explosionPrefab: {fileID: 7497262219699956444, guid: d07a1e3a48a36af4ea122eb075d2eca0, type: 3}
   player: {fileID: 1160651401}
+  gameOverController: {fileID: 1340487873}

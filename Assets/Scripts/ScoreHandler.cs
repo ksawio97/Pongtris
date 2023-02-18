@@ -7,13 +7,10 @@ public class ScoreHandler : MonoBehaviour
 
     private int _points;
 
-    public int pointsAdd
-    { 
-        set 
-        { 
-            _points += value;
-            score.text = _points.ToString(); 
-        } 
+    public int getPoints => _points;
+    public void AddPoints(int points)
+    {
+        _points += points;
     }
 
     private void Start()

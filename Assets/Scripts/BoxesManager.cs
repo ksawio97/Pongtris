@@ -69,7 +69,7 @@ public class BoxesManager : MonoBehaviour
             boxes[last].transform.position = boxSpawnPositions[i];
 
             boxes[last].GetComponent<OnDestroyActions>().PointsAddSet =
-                () => { scoreHandler.pointsAdd = 10; };
+                () => { scoreHandler.AddPoints(10); };
 
             boxes[last].GetComponent<OnDestroyActions>().DispatcherSet = 
                 (GameObject value) => { boxes.Remove(value); };
