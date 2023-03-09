@@ -5,9 +5,14 @@ public class PlayerController : MonoBehaviour
     float[] posLimits;
     void Start()
     {
-        float maxPosX = Camera.main.orthographicSize / 2 - GetComponent<BoxCollider2D>().size.x / 2;
+        Camera cam = Camera.main;
+        float aspectRatio = (float)Screen.width / (float)Screen.height;
+
+        Vector2 camSize = new Vector2(cam.orthographicSize * 2 * aspectRatio, cam.orthographicSize * 2);
+
+        float maxPosX = camSize.x / 2 - transform.localScale.x / 2;
         float minPosX = -maxPosX;
-        posLimits = new []{minPosX, maxPosX};
+        posLimits = new[] { minPosX, maxPosX };
     }
 
 

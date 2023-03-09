@@ -24,8 +24,8 @@ public class SetBorders : MonoBehaviour
         {
             new []{ new Vector3(-(camSize.x / 2 + additionalSpace), 0), new Vector3(additionalSpace * 2, camSize.y)},
             new []{ new Vector3(camSize.x / 2 + additionalSpace, 0), new Vector3(additionalSpace * 2, camSize.y)},
-            new []{ new Vector3(0, camSize.y / 2 + additionalSpace), new Vector3(camSize.x, additionalSpace * 2)},
-            new []{ new Vector3(0, -(camSize.y / 2 + additionalSpace)), new Vector3(camSize.x, additionalSpace * 2)},
+            new []{ new Vector3(0, camSize.y / 2 + additionalSpace), new Vector3(camSize.x * 1.5f, additionalSpace * 2)},
+            new []{ new Vector3(0, -(camSize.y / 2 + additionalSpace)), new Vector3(camSize.x * 1.5f, additionalSpace * 2)},
         };
 
         for (int i = 0; i < Borders.Length; i++)

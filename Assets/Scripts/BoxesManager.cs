@@ -24,7 +24,6 @@ public class BoxesManager : MonoBehaviour
 
     void Start()
     {
-        //cam size 5.625 10
         Camera cam = Camera.main;
         float aspectRatio = (float)Screen.width / (float)Screen.height;
 
@@ -69,7 +68,7 @@ public class BoxesManager : MonoBehaviour
             boxes[last].transform.position = boxSpawnPositions[i];
 
             boxes[last].GetComponent<OnDestroyActions>().PointsAddSet =
-                () => { scoreHandler.AddPoints(10); };
+                () => { scoreHandler.AddPoints(1); };
 
             boxes[last].GetComponent<OnDestroyActions>().DispatcherSet = 
                 (GameObject value) => { boxes.Remove(value); };

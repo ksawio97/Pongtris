@@ -1,3 +1,5 @@
+using System.Collections;
+using UnityEditor.Build;
 using UnityEngine;
 
 public class BallController : MonoBehaviour
@@ -21,6 +23,13 @@ public class BallController : MonoBehaviour
     private float speedPerDegree;
     private float pieceLength;
 
+    private bool _hitInvincibility;
+
+    public bool hitInvincibility
+    {
+        get { return _hitInvincibility;}
+    }
+
     void Start()
     {
         _gameOverController.BallCreated();
@@ -36,6 +45,8 @@ public class BallController : MonoBehaviour
         int pieces = 45;
         speedPerDegree = moveAmount.y / pieces;
         pieceLength = playerHalfSize / pieces;
+
+        _hitInvincibility = false;
     }
 
     void FixedUpdate()
@@ -67,8 +78,16 @@ public class BallController : MonoBehaviour
             moveAmount.x = -moveAmount.x;
         else
             moveAmount.y = -moveAmount.y;
+        _hitInvincibility = true;
 
+        StartCoroutine("HitInvincibilityCooldown");
         //moveAmount = new Vector3(PositiveOrNegative(moveAmount.x) * defaultMoveAmount.x, PositiveOrNegative(moveAmount.y) * defaultMoveAmount.y);
+    }
+
+    IEnumerator HitInvincibilityCooldown()
+    {
+        yield return new WaitForSeconds(0.001f);
+        _hitInvincibility = false;
     }
 
     private void OnDestroy()

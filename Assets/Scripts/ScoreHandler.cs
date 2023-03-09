@@ -11,6 +11,7 @@ public class ScoreHandler : MonoBehaviour
     public void AddPoints(int points)
     {
         _points += points;
+        score.text = _points.ToString();
     }
 
     private void Start()

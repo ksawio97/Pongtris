@@ -22,18 +22,15 @@ public class CollisionController : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D coll)
     {
         if (coll.transform.name == killName && coll.transform.CompareTag(borderTag))
-        {
             Destroy(gameObject);
-        }
-
-        else if (coll.transform.CompareTag(borderTag) || coll.transform.CompareTag(boxTag))
-        {
-            ballScript.OnHit(coll.transform.position, coll.collider.bounds.size);
-        }
 
         else if (coll.transform.CompareTag(playerTag))
             ballScript.OnPlayerHit();
 
-        
+        else if (ballScript.hitInvincibility)
+            return;
+
+        else if (coll.transform.CompareTag(borderTag) || coll.transform.CompareTag(boxTag))      
+            ballScript.OnHit(coll.transform.position, coll.collider.bounds.size);
     }
 }

@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class GameOverController: MonoBehaviour
 {
-    private int _ballCount;
+    private int _ballCount = 0;
 
     [SerializeField]
     private ScoreHandler scoreHandler;
@@ -22,7 +22,8 @@ public class GameOverController: MonoBehaviour
 
     private void CheckBallCount()
     {
-        if (_ballCount == 0)
+        Debug.Log(_ballCount);
+        if (_ballCount <= 0)
         {
             GameOver();
         }
