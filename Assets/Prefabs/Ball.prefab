@@ -137,7 +137,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8140a96a974ca4d419ba6731dac9e0aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnLocation: {x: 0, y: 0, z: 0}
   _player: {fileID: 0}
+  _gameOverController: {fileID: 0}
+  ballArea: {fileID: 0}
 --- !u!114 &6637585030042618084
 MonoBehaviour:
   m_ObjectHideFlags: 0

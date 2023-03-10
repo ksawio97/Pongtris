@@ -22,7 +22,6 @@ public class GameOverController: MonoBehaviour
 
     private void CheckBallCount()
     {
-        Debug.Log(_ballCount);
         if (_ballCount <= 0)
         {
             GameOver();
@@ -31,7 +30,6 @@ public class GameOverController: MonoBehaviour
 
     private void GameOver()
     {
-        Debug.Log(scoreHandler.getPoints);
         SceneManager.LoadScene(3);
     }
 }

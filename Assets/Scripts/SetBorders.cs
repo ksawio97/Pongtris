@@ -7,6 +7,9 @@ public class SetBorders : MonoBehaviour
     [SerializeField]
     private BoxCollider2D[] Borders;
 
+    [SerializeField]
+    private BoxCollider2D BallArea;
+
     void Start()
     {
         Camera cam = Camera.main;
@@ -15,8 +18,14 @@ public class SetBorders : MonoBehaviour
         Vector2 camSize = new Vector2(cam.orthographicSize * 2 * aspectRatio, cam.orthographicSize * 2);
 
         CreateBorders(camSize);
+        SetupBallArea(camSize);
     }
 
+    private void SetupBallArea(Vector2 camSize)
+    {
+        var area = BallArea.GetComponent<BoxCollider2D>();
+        area.size = camSize;
+    }
     private void CreateBorders(Vector2 camSize)
     {
         //position and sizes of colliders
@@ -24,8 +33,7 @@ public class SetBorders : MonoBehaviour
         {
             new []{ new Vector3(-(camSize.x / 2 + additionalSpace), 0), new Vector3(additionalSpace * 2, camSize.y)},
             new []{ new Vector3(camSize.x / 2 + additionalSpace, 0), new Vector3(additionalSpace * 2, camSize.y)},
-            new []{ new Vector3(0, camSize.y / 2 + additionalSpace), new Vector3(camSize.x * 1.5f, additionalSpace * 2)},
-            new []{ new Vector3(0, -(camSize.y / 2 + additionalSpace)), new Vector3(camSize.x * 1.5f, additionalSpace * 2)},
+            new []{ new Vector3(0, camSize.y / 2 + additionalSpace), new Vector3(camSize.x * 1.5f, additionalSpace * 2)}
         };
 
         for (int i = 0; i < Borders.Length; i++)

@@ -18,6 +18,9 @@ namespace Assets.Scripts
         [SerializeField]
         private GameOverController gameOverController;
 
+        [SerializeField]
+        private BoxCollider2D ballArea;
+
         private Action<Vector3>[] effects;
         void Start()
         {
@@ -31,9 +34,12 @@ namespace Assets.Scripts
         private void CreateBall(Vector3 pos)
         {
             var ball = Instantiate(ballPrefab);
+            var ballController = ball.GetComponent<BallController>();
+
             ball.transform.position = pos;
-            ball.GetComponent<BallController>().playerSet = player;
-            ball.GetComponent<BallController>().gameOverControllerSet = gameOverController;
+            ballController.playerSet = player;
+            ballController.ballAreaSet = ballArea;
+            ballController.gameOverControllerSet = gameOverController;
         }
 
         private void Explode(Vector3 pos)

@@ -6,7 +6,7 @@ public class CollisionController : MonoBehaviour
     private string playerTag;
     private string boxTag;
 
-    private string killName;
+    private string killTag;
 
     [SerializeField]
     private BallController ballScript;
@@ -16,15 +16,12 @@ public class CollisionController : MonoBehaviour
         borderTag = "Border";
         playerTag = "Player";
         boxTag = "Box";
-        killName = "BottomBorder";
+        killTag = "Kill";
     }
 
     private void OnCollisionEnter2D(Collision2D coll)
     {
-        if (coll.transform.name == killName && coll.transform.CompareTag(borderTag))
-            Destroy(gameObject);
-
-        else if (coll.transform.CompareTag(playerTag))
+        if (coll.transform.CompareTag(playerTag))
             ballScript.OnPlayerHit();
 
         else if (ballScript.hitInvincibility)
@@ -32,5 +29,11 @@ public class CollisionController : MonoBehaviour
 
         else if (coll.transform.CompareTag(borderTag) || coll.transform.CompareTag(boxTag))      
             ballScript.OnHit(coll.transform.position, coll.collider.bounds.size);
+    }
+
+    private void OnTriggerExit2D(Collider2D coll)
+    {
+        if (coll.transform.CompareTag(killTag))
+            Destroy(gameObject);
     }
 }

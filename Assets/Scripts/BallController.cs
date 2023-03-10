@@ -25,6 +25,16 @@ public class BallController : MonoBehaviour
 
     private bool _hitInvincibility;
 
+    [SerializeField]
+    private BoxCollider2D _ballArea;
+
+    public BoxCollider2D ballAreaSet
+    {
+        set
+        {
+            _ballArea = value;
+        }
+    }
     public bool hitInvincibility
     {
         get { return _hitInvincibility;}
@@ -32,6 +42,7 @@ public class BallController : MonoBehaviour
 
     void Start()
     {
+        SpawnValidation();
         _gameOverController.BallCreated();
 
         defaultMoveAmount = new Vector3(0.1f, 0.1f);
@@ -52,6 +63,12 @@ public class BallController : MonoBehaviour
     void FixedUpdate()
     {
         transform.position = transform.position + moveAmount;
+    }
+
+    private void SpawnValidation()
+    {
+        if (!GetComponent<CircleCollider2D>().IsTouching(_ballArea))
+            transform.position = _ballArea.ClosestPoint(transform.position);   
     }
 
     private int PositiveOrNegative(float num) => num < 0 ? -1 : 1;
