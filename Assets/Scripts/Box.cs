@@ -8,27 +8,23 @@ public class Box : MonoBehaviour
 
     public bool specialBoxSet { set { _specialBox = value; } }
 
-    private float colorTimer = 0;
-
-    public bool destroyedFromGameObject;
+    private float _colorTimer;
 
     void Start()
-    {   
+    {
+        _colorTimer = 0;
         spr = GetComponent<SpriteRenderer>();
         spr.color = UnityEngine.Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
     }
 
     private void SpecialColors()
     {
-        destroyedFromGameObject = false;
-        colorTimer += Time.deltaTime;
+        _colorTimer += Time.deltaTime;
 
-        if (colorTimer >= 1f)
-        {
-            colorTimer = 0;
-        }
+        if (_colorTimer >= 1f)
+            _colorTimer = 0;
 
-        spr.color = Color.HSVToRGB(colorTimer, 1, 1);
+        spr.color = Color.HSVToRGB(_colorTimer, 1, 1);
     }
 
     private void FixedUpdate()
@@ -36,18 +32,12 @@ public class Box : MonoBehaviour
         if (_specialBox)
             SpecialColors();
     }
-    private void OnTriggerStay2D(Collider2D coll)
-    {
-        if (coll.transform.CompareTag("Explosion"))
-        {
-            destroyedFromGameObject = true;
-            Destroy(gameObject);
-        }
-    }
 
-    private void OnCollisionExit2D(Collision2D coll)
+    public BoxPack GetSaveData()
     {
-        destroyedFromGameObject = true;
-        Destroy(gameObject);
+        return new BoxPack(
+            _specialBox,
+            transform.position
+        );
     }
 }

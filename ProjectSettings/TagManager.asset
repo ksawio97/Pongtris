@@ -9,6 +9,8 @@ TagManager:
   - Explosion
   - Ball
   - Kill
+  - Score
+  - BoxesManager
   layers:
   - Default
   - TransparentFX

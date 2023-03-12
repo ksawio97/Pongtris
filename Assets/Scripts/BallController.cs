@@ -4,8 +4,20 @@ using UnityEngine;
 
 public class BallController : MonoBehaviour
 {
-    private Vector3 moveAmount;
-    private Vector3 defaultMoveAmount;
+    private Vector3 _moveAmount;
+    private Vector3 defaultMoveAmount = new Vector3(0.1f, 0.1f);
+
+    public Vector3 moveAmount
+    {
+        get
+        {
+            return _moveAmount;
+        }
+        set
+        {
+            defaultMoveAmount = value;
+        }
+    }
 
     private float maxTotalSpeed;
 
@@ -15,9 +27,9 @@ public class BallController : MonoBehaviour
     public GameObject playerSet { set { _player = value; } }
 
     [SerializeField]
-    private GameOverController _gameOverController;
+    private GameManager _gameManager;
 
-    public GameOverController gameOverControllerSet {set { _gameOverController = value;  }}
+    public GameManager gameManagerSet { set { _gameManager = value;  }}
 
     private float playerHalfSize;
     private float speedPerDegree;
@@ -25,16 +37,6 @@ public class BallController : MonoBehaviour
 
     private bool _hitInvincibility;
 
-    [SerializeField]
-    private BoxCollider2D _ballArea;
-
-    public BoxCollider2D ballAreaSet
-    {
-        set
-        {
-            _ballArea = value;
-        }
-    }
     public bool hitInvincibility
     {
         get { return _hitInvincibility;}
@@ -42,11 +44,9 @@ public class BallController : MonoBehaviour
 
     void Start()
     {
-        SpawnValidation();
-        _gameOverController.BallCreated();
+        _gameManager.BallCreated();
 
-        defaultMoveAmount = new Vector3(0.1f, 0.1f);
-        moveAmount = defaultMoveAmount;
+        _moveAmount = defaultMoveAmount;
 
         maxTotalSpeed = 0.2f;
 
@@ -54,7 +54,7 @@ public class BallController : MonoBehaviour
             playerHalfSize = _player.GetComponent<BoxCollider2D>().bounds.size.x / 2;
 
         int pieces = 45;
-        speedPerDegree = moveAmount.y / pieces;
+        speedPerDegree = maxTotalSpeed / 2 / pieces;
         pieceLength = playerHalfSize / pieces;
 
         _hitInvincibility = false;
@@ -62,43 +62,33 @@ public class BallController : MonoBehaviour
 
     void FixedUpdate()
     {
-        transform.position = transform.position + moveAmount;
+        transform.position = transform.position + _moveAmount;
     }
-
-    private void SpawnValidation()
-    {
-        if (!GetComponent<CircleCollider2D>().IsTouching(_ballArea))
-            transform.position = _ballArea.ClosestPoint(transform.position);   
-    }
-
-    private int PositiveOrNegative(float num) => num < 0 ? -1 : 1;
 
     public void OnPlayerHit()
     {
         float distanceFromCenter = Mathf.Abs(_player.transform.position.x - transform.position.x);
 
-        float inRangeDegree(float num) => num / pieceLength < 45 ? num / pieceLength : 45;
+        float inRangeDegree(float num) => num / pieceLength <= 45 ? num / pieceLength : 45;
         float newSpeedX = inRangeDegree(distanceFromCenter) * speedPerDegree;
 
-        int direction = - PositiveOrNegative(moveAmount.y);
-        moveAmount.y = (maxTotalSpeed - newSpeedX) * direction;
+        _moveAmount.y = (maxTotalSpeed - Mathf.Abs(newSpeedX));
 
         if (_player.transform.position.x <= transform.position.x)
-            moveAmount.x = newSpeedX;
+            _moveAmount.x = newSpeedX;
         else
-            moveAmount.x = -newSpeedX;
+            _moveAmount.x = -newSpeedX;
     }
 
     public void OnHit(Vector2 obsPos, Vector2 obsSize)
     {
         if (obsPos.y - obsSize.y / 2 <= transform.position.y && transform.position.y <= obsPos.y + obsSize.y / 2)
-            moveAmount.x = -moveAmount.x;
+            _moveAmount.x = -moveAmount.x;
         else
-            moveAmount.y = -moveAmount.y;
+            _moveAmount.y = -moveAmount.y;
         _hitInvincibility = true;
 
         StartCoroutine("HitInvincibilityCooldown");
-        //moveAmount = new Vector3(PositiveOrNegative(moveAmount.x) * defaultMoveAmount.x, PositiveOrNegative(moveAmount.y) * defaultMoveAmount.y);
     }
 
     IEnumerator HitInvincibilityCooldown()
@@ -107,8 +97,9 @@ public class BallController : MonoBehaviour
         _hitInvincibility = false;
     }
 
-    private void OnDestroy()
+    public void DestroyOnTriggerLeft()
     {
-        _gameOverController.BallDestroyed();
+        _gameManager.BallDestroyed();
+        Destroy(gameObject);
     }
 }

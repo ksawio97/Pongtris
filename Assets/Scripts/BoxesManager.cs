@@ -1,7 +1,7 @@
 using Assets.Scripts;
 using System.Collections.Generic;
 using System.Linq;
-using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BoxesManager : MonoBehaviour
@@ -29,11 +29,15 @@ public class BoxesManager : MonoBehaviour
 
         camSize = new Vector2(cam.orthographicSize * 2 * aspectRatio, cam.orthographicSize * 2);
 
-        boxes = new List<GameObject>();
+        //if didn't load
+        if (boxes == null)
+        {
+            boxes = new ();
+            moveAmount = camSize.x / 5;
+            moveVec = new Vector2(0, camSize.x / 5 / 150);
+            moved = moveAmount;
+        }
 
-        moveAmount = camSize.x / 5;
-        moveVec = new Vector2(0, camSize.x / 5 / 150);
-        moved = moveAmount;
 
         boxSpawnPositions = new Vector3[5];
 
@@ -50,11 +54,10 @@ public class BoxesManager : MonoBehaviour
         TryMoveBoxes();
     }
 
+    static int SkipPosCount() => Random.Range(0, 3);
+    
     private void GenerateBoxes()
     {
-        int last;
-
-        int SkipPosCount() => Random.Range(0, 3);
         int[] toSkip = GetRandomPosToSkip(SkipPosCount());
 
         for (int i = 0; i < boxSpawnPositions.Length; i++)
@@ -62,25 +65,31 @@ public class BoxesManager : MonoBehaviour
             if (toSkip.Contains(i))
                 continue;
 
-            boxes.Add(Instantiate(boxPrefab));
-            last = boxes.Count - 1;
-
-            boxes[last].transform.position = boxSpawnPositions[i];
-
-            boxes[last].GetComponent<OnDestroyActions>().PointsAddSet =
-                () => { scoreHandler.AddPoints(1); };
-
-            boxes[last].GetComponent<OnDestroyActions>().DispatcherSet = 
-                (GameObject value) => { boxes.Remove(value); };
-
-            //Makes box special
-            bool isSpecial = IsBoxSpecial();
-            boxes[last].GetComponent<Box>().specialBoxSet = isSpecial;
-
-            if (isSpecial)
-                boxes[last].GetComponent<OnDestroyActions>().DestroyEffectSet = GetComponent<EffectsController>().DoRandomEffect;
+            CreateBox(boxSpawnPositions[i], IsBoxSpecial());
         }
         StartMoving();
+    }
+
+    private void CreateBox(Vector3 spawnPosition, bool specialBox)
+    {
+        boxes.Add(Instantiate(boxPrefab));
+
+        int last = boxes.Count - 1;
+        var boxScript = boxes[last].GetComponent<Box>();
+        var onDestroyActionsScript = boxes[last].GetComponent<OnDestroyActions>();     
+
+        boxes[last].transform.position = spawnPosition;
+
+        onDestroyActionsScript.PointsAddSet =
+            () => { scoreHandler.AddPoints(1); };
+
+        onDestroyActionsScript.DispatcherSet =
+            (GameObject value) => { boxes.Remove(value); };
+
+        boxScript.specialBoxSet = specialBox;
+
+        if (specialBox)
+            onDestroyActionsScript.DestroyEffectSet = GetComponent<EffectsController>().DoRandomEffect;
     }
 
     private static int rNum() => Random.Range(0, 10);
@@ -128,9 +137,35 @@ public class BoxesManager : MonoBehaviour
 
     private void MoveBoxes()
     {
-        foreach(var box in boxes)
+        foreach (var box in boxes)
         {
             box.transform.position -= moveVec;
         }
+    }
+
+    public BoxesManagerPack GetSaveData()
+    {
+        return new BoxesManagerPack(
+            boxes,
+            moveAmount,
+            moveVec,
+            moved
+        );
+    }
+
+    public void LoadSaveData(BoxesManagerPack boxesManagerPack)
+    {
+        boxes = new();
+        foreach (var box in boxesManagerPack.boxes)
+            LoadBoxSaveData(box);
+
+        moveAmount = boxesManagerPack.moveAmount;
+        moveVec = boxesManagerPack.moveVec;
+        moved = boxesManagerPack.moved;
+    }
+
+    public void LoadBoxSaveData(BoxPack boxPack)
+    {
+        CreateBox(boxPack.spawnPosition , boxPack.specialBox);
     }
 }

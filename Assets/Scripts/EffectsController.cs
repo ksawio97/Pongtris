@@ -16,39 +16,43 @@ namespace Assets.Scripts
         private GameObject player;
 
         [SerializeField]
-        private GameOverController gameOverController;
+        private GameManager gameManager;
 
         [SerializeField]
         private BoxCollider2D ballArea;
 
-        private Action<Vector3>[] effects;
+        private Func<Vector3, GameObject>[] effects;
         void Start()
         {
-            effects = new Action<Vector3>[]{CreateBall, Explode};
+            effects = new Func<Vector3, GameObject>[] { CreateBall, Explode};
         }
         public void DoRandomEffect(Vector3 pos)
         {
             effects[UnityEngine.Random.Range(0, effects.Length)](pos);
         }
 
-        private void CreateBall(Vector3 pos)
+        public GameObject CreateBall(Vector3 pos)
         {
             var ball = Instantiate(ballPrefab);
             var ballController = ball.GetComponent<BallController>();
 
             ball.transform.position = pos;
             ballController.playerSet = player;
-            ballController.ballAreaSet = ballArea;
-            ballController.gameOverControllerSet = gameOverController;
+            ball.GetComponent<CollisionController>().ballAreaSet = ballArea;
+            ballController.gameManagerSet = gameManager;
+
+            return ball;
         }
 
-        private void Explode(Vector3 pos)
+        private GameObject Explode(Vector3 pos)
         {
             var explosion = Instantiate(explosionPrefab);
             explosion.transform.position = pos;
 
             StartCoroutine("DisableExplosionTrigger", explosion.GetComponent<CircleCollider2D>());
             Destroy(explosion, explosion.GetComponent<ParticleSystem>().main.startLifetime.constantMax);
+
+            return explosion;
         }
 
         IEnumerator DisableExplosionTrigger(CircleCollider2D explosionCollider)

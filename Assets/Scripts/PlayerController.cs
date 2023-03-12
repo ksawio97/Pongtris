@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
     float GetValidPos()
     {
         float inputPosX = Camera.main.ScreenToWorldPoint(Input.mousePosition).x;
-        //cjeck if in range
+        //check if in range
         if (inputPosX < posLimits[0])
             return posLimits[0];
         else if(posLimits[1] < inputPosX)

@@ -1,5 +1,7 @@
 using System;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.AdaptivePerformance;
 
 public class OnDestroyActions : MonoBehaviour
 {
@@ -17,6 +19,11 @@ public class OnDestroyActions : MonoBehaviour
     private Action _PointsAdd;
 
     public Action PointsAddSet { set { _PointsAdd = value; } }
+    private static Action _GameEnd;
+
+    public static Action GameEnd { set { _GameEnd = value; } }
+
+    private bool gettingDestroyed = false;
 
     void OnNormalBoxDestroy()
     {
@@ -31,9 +38,34 @@ public class OnDestroyActions : MonoBehaviour
         Destroy(particles, particles.GetComponent<ParticleSystem>().main.startLifetime.constantMax);
     }
 
+    private void OnTriggerExit2D(Collider2D coll)
+    {
+        if (!gettingDestroyed && coll.transform.CompareTag("Kill"))
+            _GameEnd();
+    }
+
+    private void OnTriggerStay2D(Collider2D coll)
+    {
+        if (coll.transform.CompareTag("Explosion"))
+        {
+            gettingDestroyed = true;
+            Destroy(gameObject);
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D coll)
+    {
+        if (coll.transform.CompareTag("Ball"))
+        {
+            gettingDestroyed = true;
+            Destroy(gameObject);
+        }
+    }
+
     void OnDestroy()
     {
-        if (!GetComponent<Box>().destroyedFromGameObject)
+        //to prevent doing code when scene is getting closed
+        if (!gettingDestroyed)
             return;
 
         if (_Dispatcher != null)

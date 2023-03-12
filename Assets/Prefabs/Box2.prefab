@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3756793439770236590}
   - component: {fileID: 3756793439770236589}
   - component: {fileID: 4176393788073882964}
+  - component: {fileID: 4071249714110810713}
   m_Layer: 0
   m_Name: Box2
   m_TagString: Box
@@ -99,6 +100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c598c500691ee549bcce3dce7566645, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  destroyedFromGameObject: 0
 --- !u!61 &3756793439770236589
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -138,3 +140,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boxDestroyedParticlesPrefab: {fileID: 2665675449750453125, guid: d4e985fd9f5cdf943818719ab5c23eb6, type: 3}
+--- !u!50 &4071249714110810713
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3756793439770236588}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 7
