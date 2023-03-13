@@ -5,7 +5,11 @@ using System.Text;
 public static class GameSaveLoad
 {
     static readonly string path = Application.persistentDataPath + "/SaveData.json";
+    static readonly string highScorePath = Application.persistentDataPath + "/HighScore.txt";
     static readonly Encoding encodeType = Encoding.ASCII;
+
+    public static int score;
+    public static int highScore = GetHighScore();
 
     public static void Save()
     {
@@ -20,7 +24,8 @@ public static class GameSaveLoad
         SaveData saveData = new();
 
         var gameObjects = Object.FindObjectsOfType<GameObject>();
-        foreach(var gameObject in gameObjects )
+        saveData.points = score;
+        foreach (var gameObject in gameObjects )
         {
             switch (gameObject.tag)
             {
@@ -29,9 +34,6 @@ public static class GameSaveLoad
                     break;
                 case "Ball":
                     saveData.ballPacks.Add(new BallPack { pos = gameObject.transform.position, moveAmount = gameObject.GetComponent<BallController>().moveAmount});
-                    break;
-                case "Score":
-                    saveData.points = gameObject.GetComponent<ScoreHandler>().getPoints;
                     break;
                 case "BoxesManager":
                     saveData.boxesManagerPack = gameObject.GetComponent<BoxesManager>().GetSaveData();
@@ -53,8 +55,31 @@ public static class GameSaveLoad
         return saveData;
     }
 
+    private static int GetHighScore()
+    {
+        if (!File.Exists(highScorePath))
+            return 0;
+
+        var num = File.ReadAllText(highScorePath, encodeType);
+
+        return int.Parse(num);
+    }
+
+    private static void UpdateHighScore()
+    {
+        if (highScore >= score)
+            return;
+
+        highScore = score;
+
+        File.WriteAllText(highScorePath, highScore.ToString(), encodeType);
+    }
     public static void DeleteSave()
     {
+        UpdateHighScore();
+        if (!File.Exists(path))
+            return;
+
         File.Delete(path);
     }
 }

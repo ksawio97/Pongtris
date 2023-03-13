@@ -13,6 +13,6 @@ public class GameButtonEvent : MonoBehaviour
 
     void Start()
     {
-        pauseButton.onClick.AddListener(() => { gameManager.TrySaveGame(); SceneManager.LoadScene(3);});
+        pauseButton.onClick.AddListener(() => { gameManager.TrySaveGame(); SceneManager.LoadScene(4);});
     }
 }
