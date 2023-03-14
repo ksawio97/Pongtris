@@ -27,6 +27,7 @@ public class OnDestroyActions : MonoBehaviour
 
     void OnNormalBoxDestroy()
     {
+        AudioManager.Instance.PlaySound("BoxDestroy");
         var particles = Instantiate(boxDestroyedParticlesPrefab);
         particles.transform.position = transform.position;
 
@@ -81,7 +82,10 @@ public class OnDestroyActions : MonoBehaviour
             _Dispatcher(gameObject);
 
         if (_DestroyEffect != null)
+        {
+            AudioManager.Instance.PlaySound("SpecialBoxDestroy");
             _DestroyEffect(transform.position);
+        }
         else
             OnNormalBoxDestroy();
 

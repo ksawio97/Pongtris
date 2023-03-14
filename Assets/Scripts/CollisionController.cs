@@ -66,6 +66,7 @@ public class CollisionController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D coll)
     {
+        AudioManager.Instance.PlaySound("Hit");
         if (coll.transform.CompareTag(playerTag))
             ballScript.OnPlayerHit();
 

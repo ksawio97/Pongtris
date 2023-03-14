@@ -48,6 +48,7 @@ namespace Assets.Scripts
         {
             var explosion = Instantiate(explosionPrefab);
             explosion.transform.position = pos;
+            AudioManager.Instance.PlaySound("Explosion");
 
             StartCoroutine("DisableExplosionTrigger", explosion.GetComponent<CircleCollider2D>());
             Destroy(explosion, explosion.GetComponent<ParticleSystem>().main.startLifetime.constantMax);

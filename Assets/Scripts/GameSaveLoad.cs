@@ -40,7 +40,7 @@ public static class GameSaveLoad
                     break;
             }
         }
-        //TO DO add checking points with highscore and then maybe changing it (maybe add it to DeleteSave ?)
+
         return saveData;
     }
 
