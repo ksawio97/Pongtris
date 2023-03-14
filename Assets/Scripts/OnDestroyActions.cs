@@ -53,6 +53,15 @@ public class OnDestroyActions : MonoBehaviour
         }
     }
 
+    private void OnCollisionStay2D(Collision2D coll)
+    {
+        if (coll.transform.CompareTag("Ball"))
+        {
+            gettingDestroyed = true;
+            Destroy(gameObject);
+        }
+    }
+
     private void OnCollisionExit2D(Collision2D coll)
     {
         if (coll.transform.CompareTag("Ball"))

@@ -12,6 +12,9 @@ public class Box : MonoBehaviour
 
     void Start()
     {
+        var size = DynamicGameSize.GetAppropriateSize(transform.localScale);
+        transform.localScale = new Vector3(size.x, size.x, transform.localScale.z);
+
         _colorTimer = 0;
         spr = GetComponent<SpriteRenderer>();
         spr.color = UnityEngine.Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);

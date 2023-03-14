@@ -35,20 +35,16 @@ public class BallController : MonoBehaviour
     private float speedPerDegree;
     private float pieceLength;
 
-    private bool _hitInvincibility;
-
-    public bool hitInvincibility
-    {
-        get { return _hitInvincibility;}
-    }
-
     void Start()
     {
+        var size = DynamicGameSize.GetAppropriateSize(transform.localScale);
+        transform.localScale = new Vector3(size.x, size.x, transform.localScale.z);
+
         _gameManager.BallCreated();
 
         _moveAmount = defaultMoveAmount;
 
-        maxTotalSpeed = 0.2f;
+        maxTotalSpeed = (DynamicGameSize.ratio.x * DynamicGameSize.ratio.y) * 0.2f;
 
         if (_player != null)
             playerHalfSize = _player.GetComponent<BoxCollider2D>().bounds.size.x / 2;
@@ -56,8 +52,6 @@ public class BallController : MonoBehaviour
         int pieces = 45;
         speedPerDegree = maxTotalSpeed / 2 / pieces;
         pieceLength = playerHalfSize / pieces;
-
-        _hitInvincibility = false;
     }
 
     void FixedUpdate()
@@ -86,15 +80,6 @@ public class BallController : MonoBehaviour
             _moveAmount.x = -moveAmount.x;
         else
             _moveAmount.y = -moveAmount.y;
-        _hitInvincibility = true;
-
-        StartCoroutine("HitInvincibilityCooldown");
-    }
-
-    IEnumerator HitInvincibilityCooldown()
-    {
-        yield return new WaitForSeconds(0.001f);
-        _hitInvincibility = false;
     }
 
     public void DestroyOnTriggerLeft()

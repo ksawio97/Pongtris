@@ -2,17 +2,17 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    float[] posLimits;
+    static float[] posLimits;
+
     void Start()
     {
-        Camera cam = Camera.main;
-        float aspectRatio = (float)Screen.width / (float)Screen.height;
-
-        Vector2 camSize = new Vector2(cam.orthographicSize * 2 * aspectRatio, cam.orthographicSize * 2);
-
-        float maxPosX = camSize.x / 2 - transform.localScale.x / 2;
-        float minPosX = -maxPosX;
-        posLimits = new[] { minPosX, maxPosX };
+        transform.localScale = DynamicGameSize.GetAppropriateSize(transform.localScale);
+        if (posLimits == null)
+        {
+            float maxPosX = DynamicGameSize.camSize.x / 2 - transform.localScale.x / 2;
+            float minPosX = -maxPosX;
+            posLimits = new[] { minPosX, maxPosX };
+        }
     }
 
 

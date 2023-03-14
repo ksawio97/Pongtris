@@ -14,8 +14,6 @@ public class BoxesManager : MonoBehaviour
 
     private List<GameObject> boxes;
 
-    private Vector2 camSize;
-
     private float moveAmount;
     private Vector3 moveVec;
     private float moved;
@@ -23,34 +21,34 @@ public class BoxesManager : MonoBehaviour
     private float defaultMoveVec;
     private float maxMoveVec;
 
-    Vector3[] boxSpawnPositions;
+    static Vector3[] boxSpawnPositions;
 
     void Start()
     {
-        Camera cam = Camera.main;
-        float aspectRatio = (float)Screen.width / (float)Screen.height;
-
-        camSize = new Vector2(cam.orthographicSize * 2 * aspectRatio, cam.orthographicSize * 2);
-        defaultMoveVec = camSize.x / 5 / 150;
-
-        //if didn't load
-        if (boxes == null)
-        {
-            boxes = new();
-            moveAmount = camSize.x / 5;
-            moveVec = new Vector2(0, defaultMoveVec);
-            moved = moveAmount;
-        }
-        boxSpawnPositions = new Vector3[5];
-
-        for (int i = 0; i < boxSpawnPositions.Length; i++)
-            boxSpawnPositions[i] = new Vector3(camSize.x / 5 * i + camSize.x / 5 / 2 - camSize.x / 2, camSize.y / 2 + camSize.x / 5 / 2);
-
+        defaultMoveVec = DynamicGameSize.camSize.y * DynamicGameSize.ratio.y / 10 / 150;
         maxMoveVec = defaultMoveVec * 2;
+
+        if (boxes == null)
+            SetStartVariables();
+
+        if (boxSpawnPositions == null)
+        {
+            boxSpawnPositions = new Vector3[5];
+            for (int i = 0; i < boxSpawnPositions.Length; i++)
+                boxSpawnPositions[i] = new Vector3(DynamicGameSize.camSize.x / 5 * i + DynamicGameSize.camSize.x / 5 / 2 - DynamicGameSize.camSize.x / 2, DynamicGameSize.camSize.y / 2 + DynamicGameSize.camSize.x / 5 / 2);
+        }
+ 
         //30s / 0.5s = 60
         StartCoroutine("BoostSpeed", (maxMoveVec - defaultMoveVec) / 60);
     }
 
+    void SetStartVariables()
+    {
+        boxes = new();
+        moveAmount = DynamicGameSize.camSize.x / 5;
+        moveVec = new Vector2(0, defaultMoveVec);
+        moved = moveAmount;
+    }
     System.Collections.IEnumerator BoostSpeed(float moveBoost)
     {
         yield return new WaitForSeconds(0.5f);

@@ -69,15 +69,13 @@ public class CollisionController : MonoBehaviour
         if (coll.transform.CompareTag(playerTag))
             ballScript.OnPlayerHit();
 
-        else if (ballScript.hitInvincibility)
-            return;
-
         else if (coll.transform.CompareTag(borderTag) || coll.transform.CompareTag(boxTag))
-        {     
             ballScript.OnHit(coll.transform.position, coll.collider.bounds.size);
-            //dont know if this is necessary it should prevent bug that allows ball to only move y  
-            SpawnValidation();
-        }
+    }
+
+    private void OnCollisionStay2D(Collision2D coll)
+    {
+        OnCollisionEnter2D(coll);
     }
 
     private void OnTriggerExit2D(Collider2D coll)
