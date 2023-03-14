@@ -20,6 +20,9 @@ public class BoxesManager : MonoBehaviour
     private Vector3 moveVec;
     private float moved;
 
+    private float defaultMoveVec;
+    private float maxMoveVec;
+
     Vector3[] boxSpawnPositions;
 
     void Start()
@@ -28,34 +31,55 @@ public class BoxesManager : MonoBehaviour
         float aspectRatio = (float)Screen.width / (float)Screen.height;
 
         camSize = new Vector2(cam.orthographicSize * 2 * aspectRatio, cam.orthographicSize * 2);
+        defaultMoveVec = camSize.x / 5 / 150;
 
         //if didn't load
         if (boxes == null)
         {
-            boxes = new ();
+            boxes = new();
             moveAmount = camSize.x / 5;
-            moveVec = new Vector2(0, camSize.x / 5 / 150);
+            moveVec = new Vector2(0, defaultMoveVec);
             moved = moveAmount;
         }
-
-
         boxSpawnPositions = new Vector3[5];
 
-        for(int i = 0; i < boxSpawnPositions.Length; i++)
-        {
+        for (int i = 0; i < boxSpawnPositions.Length; i++)
             boxSpawnPositions[i] = new Vector3(camSize.x / 5 * i + camSize.x / 5 / 2 - camSize.x / 2, camSize.y / 2 + camSize.x / 5 / 2);
-        }
+
+        maxMoveVec = defaultMoveVec * 2;
+        //30s / 0.5s = 60
+        StartCoroutine("BoostSpeed", (maxMoveVec - defaultMoveVec) / 60);
     }
 
+    System.Collections.IEnumerator BoostSpeed(float moveBoost)
+    {
+        yield return new WaitForSeconds(0.5f);
+        moveVec.y += moveBoost;
+        if (moveVec.y < maxMoveVec)
+        {
+            StartCoroutine("BoostSpeed", moveBoost);
+
+        }
+    }
     void FixedUpdate()
     {
-        if (boxes.Count == 0)
+        if (boxes.Count == 0 && CheckSpawnsSafety())
             GenerateBoxes();
         TryMoveBoxes();
     }
-
+    //to prevent getting a lot of free points
+    bool CheckSpawnsSafety()
+    {
+        foreach(var spawnPosition in boxSpawnPositions)
+        {
+            Collider2D[] hitColliders = Physics2D.OverlapPointAll(spawnPosition);
+            if (hitColliders.Select(x => x.tag).Contains("Explosion"))
+                return false;
+        }
+        return true;
+    }
     static int SkipPosCount() => Random.Range(0, 3);
-    
+
     private void GenerateBoxes()
     {
         int[] toSkip = GetRandomPosToSkip(SkipPosCount());
@@ -76,7 +100,7 @@ public class BoxesManager : MonoBehaviour
 
         int last = boxes.Count - 1;
         var boxScript = boxes[last].GetComponent<Box>();
-        var onDestroyActionsScript = boxes[last].GetComponent<OnDestroyActions>();     
+        var onDestroyActionsScript = boxes[last].GetComponent<OnDestroyActions>();
 
         boxes[last].transform.position = spawnPosition;
 
@@ -105,7 +129,7 @@ public class BoxesManager : MonoBehaviour
         int randomPos() => Random.Range(0, boxSpawnPositions.Length);
         int drawnNum;
 
-        for(int i = 0; i < count;)
+        for (int i = 0; i < count;)
         {
             drawnNum = randomPos();
             if (!toSkip.Contains(drawnNum))
@@ -122,16 +146,15 @@ public class BoxesManager : MonoBehaviour
 
     private void TryMoveBoxes()
     {
+        bool CheckNeedForAlignment() => moveAmount % moveVec.y != 0 && moved + moveVec.y > moveAmount;
         bool CheckIfYouNeedToMove() => moved < moveAmount;
 
-        if (CheckIfYouNeedToMove())
+        if (!CheckIfYouNeedToMove() || CheckNeedForAlignment())
+            GenerateBoxes();
+        else
         {
             moved += moveVec.y;
             MoveBoxes();
-        }
-        else
-        {
-            GenerateBoxes();
         }
     }
 
@@ -166,6 +189,6 @@ public class BoxesManager : MonoBehaviour
 
     public void LoadBoxSaveData(BoxPack boxPack)
     {
-        CreateBox(boxPack.spawnPosition , boxPack.specialBox);
+        CreateBox(boxPack.spawnPosition, boxPack.specialBox);
     }
 }
