@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -12,10 +13,14 @@ public class PauseButtonsEvents : MonoBehaviour
 
     [SerializeField]
     private Button exitButton;
+
+    private static string sound = "UIClick";
     void Start()
     {
-        resumeButton.onClick.AddListener(() => { SceneManager.LoadScene(1); });
-        menuButton.onClick.AddListener(() => { SceneManager.LoadScene(0); });
-        //exitButton.onClick.AddListener();
+        Action<string> playSound = AudioManager.Instance.PlaySound;
+
+        resumeButton.onClick.AddListener(() => { playSound(sound); SceneManager.LoadScene(1); });
+        menuButton.onClick.AddListener(() => { playSound(sound);  SceneManager.LoadScene(0); });
+        exitButton.onClick.AddListener(() => { playSound(sound); Application.Quit(); });
     }
 }

@@ -7,8 +7,9 @@ using UnityEngine.SceneManagement;
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
+
     [SerializeField]
-    private Sound[] musicSound, sfxSounds;
+    private Sound[] musicSounds, sfxSounds;
 
     [SerializeField]
     private AudioSource musicSource, sfxSource;
@@ -26,17 +27,12 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    void Start()
-    {
-        PlayMusic("Track 6");
-        SceneManager.activeSceneChanged += (sc1, sc2) => { Instance.StopMusic(); };
-    }
     public void PlayMusic(string name)
     {
-        var s = Array.Find(musicSound, x => x.name == name);
-        if (s != null)
+        var sound = Array.Find(musicSounds, x => x.name == name);
+        if (sound != null)
         {
-            musicSource.clip = s.clip;
+            musicSource.clip = sound.clip;
             musicSource.Play();
         }
     }
@@ -48,10 +44,18 @@ public class AudioManager : MonoBehaviour
 
     public void PlaySound(string name)
     {
-        var s = Array.Find(sfxSounds, x => x.name == name);
-        if (s != null)
+        var sound = Array.Find(sfxSounds, x => x.name == name);
+        if (sound != null)
         {
-            sfxSource.PlayOneShot(s.clip);
+            sfxSource.PlayOneShot(sound.clip);
         }
+    }
+
+    public void ChangeVolumesOfType(SoundType type, float volume)
+    {
+        if (type == SoundType.Music)
+            musicSource.volume = volume;
+        else 
+            sfxSource.volume = volume;
     }
 }

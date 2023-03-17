@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -12,10 +13,14 @@ public class MenuButtonsEvents : MonoBehaviour
 
     [SerializeField]
     private Button exitButton;
+
+    private static string sound = "UIClick";
     void Start()
     {
-        playButton.onClick.AddListener(() => { SceneManager.LoadScene(1); });
-        settingsButton.onClick.AddListener(() => { SceneManager.LoadScene(2); });
-        //exitButton.onClick.AddListener();
+        Action<string> playSound = AudioManager.Instance.PlaySound;
+
+        playButton.onClick.AddListener(() => { playSound(sound);  SceneManager.LoadScene(1); });
+        settingsButton.onClick.AddListener(() => { playSound(sound); SceneManager.LoadScene(2); });
+        exitButton.onClick.AddListener(() => { playSound(sound); Application.Quit(); });
     }
 }

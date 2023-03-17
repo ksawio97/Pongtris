@@ -12,6 +12,7 @@ public class GameOverButtonsEvents : MonoBehaviour
 
     void Start()
     {
+        AudioManager.Instance.PlaySound("Explosion");
         playAgainButton.onClick.AddListener(() => { SceneManager.LoadScene(1); });
         menuButton.onClick.AddListener(() => { SceneManager.LoadScene(0); });
     }

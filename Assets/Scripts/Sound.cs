@@ -1,8 +1,15 @@
+using System;
 using UnityEngine;
 
-[System.Serializable]
+[Serializable]
 public class Sound
 {
     public string name;
     public AudioClip clip;
+}
+
+public enum SoundType
+{
+    Music,
+    Sfx
 }

@@ -13,7 +13,9 @@ public class ScoreTextUpdater : MonoBehaviour
 
     private void Start()
     {
-        highScore.text = $"High Score: {GameSaveLoad.highScore}";
-        score.text = $"Score: {GameSaveLoad.score}";
+        if (highScore != null)
+            highScore.text = $"High Score: {GameSaveLoad.highScore}";
+        if (score != null)
+            score.text = $"Score: {GameSaveLoad.score}";
     }
 }
