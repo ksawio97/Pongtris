@@ -7,18 +7,27 @@ using UnityEngine.UI;
 public class VolumeSectionHandle : MonoBehaviour
 {
     [SerializeField]
-    SoundType type;
+    public SoundType type;
 
-    Slider slider;
+    private Slider slider;
 
-    void Start()
+    public float sliderValue
+    {
+        get
+        {
+            return slider.value;
+        }
+    }
+
+    void Awake()
     {
         slider = GetComponentInChildren<Slider>();
     }
     //TO DO Add sounds to slider
     //TO DO Add saving to SaveData settings
-    void OnDestroy()
+
+    public void LoadSliderValue(float volume)
     {
-        AudioManager.Instance.ChangeVolumesOfType(type, slider.value);
+        slider.value = volume;
     }
 }

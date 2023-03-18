@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
 
 public class GameOverButtonsEvents : MonoBehaviour
 {
@@ -10,10 +11,14 @@ public class GameOverButtonsEvents : MonoBehaviour
     [SerializeField]
     private Button menuButton;
 
+    private static string sound = "UIClick";
+
     void Start()
     {
+        Action<string> playSound = AudioManager.Instance.PlayUISound;
+
         AudioManager.Instance.PlaySound("Explosion");
-        playAgainButton.onClick.AddListener(() => { SceneManager.LoadScene(1); });
-        menuButton.onClick.AddListener(() => { SceneManager.LoadScene(0); });
+        playAgainButton.onClick.AddListener(() => { playSound(sound); SceneManager.LoadScene(1); });
+        menuButton.onClick.AddListener(() => { playSound(sound); SceneManager.LoadScene(0); });
     }
 }

@@ -17,7 +17,7 @@ public class PauseButtonsEvents : MonoBehaviour
     private static string sound = "UIClick";
     void Start()
     {
-        Action<string> playSound = AudioManager.Instance.PlaySound;
+        Action<string> playSound = AudioManager.Instance.PlayUISound;
 
         resumeButton.onClick.AddListener(() => { playSound(sound); SceneManager.LoadScene(1); });
         menuButton.onClick.AddListener(() => { playSound(sound);  SceneManager.LoadScene(0); });

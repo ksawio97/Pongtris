@@ -56,3 +56,16 @@ public struct BoxPack
     public bool specialBox;
     public Vector3 spawnPosition;
 }
+
+[Serializable]
+public class SettingsData
+{
+    public List<SettingData> settingsData = new ();
+}
+
+[Serializable]
+public struct SettingData
+{
+    public SoundType type;
+    public float volume;
+}

@@ -17,7 +17,7 @@ public class MenuButtonsEvents : MonoBehaviour
     private static string sound = "UIClick";
     void Start()
     {
-        Action<string> playSound = AudioManager.Instance.PlaySound;
+        Action<string> playSound = AudioManager.Instance.PlayUISound;
 
         playButton.onClick.AddListener(() => { playSound(sound);  SceneManager.LoadScene(1); });
         settingsButton.onClick.AddListener(() => { playSound(sound); SceneManager.LoadScene(2); });

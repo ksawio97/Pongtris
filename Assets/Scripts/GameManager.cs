@@ -36,7 +36,7 @@ public class GameManager: MonoBehaviour
     
     private void LoadGame()
     {
-        var saveData = GameSaveLoad.Load();
+        var saveData = GameSaveLoad.Load<SaveData>(GameSaveLoad.path);
         //if no load
         if (saveData.IsUnityNull())
         {

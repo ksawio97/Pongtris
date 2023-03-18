@@ -11,5 +11,6 @@ public class Sound
 public enum SoundType
 {
     Music,
-    Sfx
+    Sfx,
+    UI
 }

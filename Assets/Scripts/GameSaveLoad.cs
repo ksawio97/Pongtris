@@ -1,11 +1,14 @@
 using UnityEngine;
 using System.IO;
 using System.Text;
+using System.Collections.Generic;
+using UnityEngine.UI;
 
 public static class GameSaveLoad
 {
-    static readonly string path = Application.persistentDataPath + "/SaveData.json";
-    static readonly string highScorePath = Application.persistentDataPath + "/HighScore.txt";
+    public static readonly string path = Application.persistentDataPath + "/SaveData.json";
+    public static readonly string highScorePath = Application.persistentDataPath + "/HighScore.txt";
+    public static readonly string settingsPath = Application.persistentDataPath + "/SettingsData.txt";
     static readonly Encoding encodeType = Encoding.ASCII;
 
     public static int score;
@@ -44,15 +47,24 @@ public static class GameSaveLoad
         return saveData;
     }
 
-    public static SaveData Load()
+    public static T Load<T>(string p)
     {
-        if (!File.Exists(path))
-            return null;
+        if (!File.Exists(p))
+            return default(T);
         
-        var json = File.ReadAllText(path, encodeType);
-        var saveData = JsonUtility.FromJson<SaveData>(json);
+        var json = File.ReadAllText(p, encodeType);
+        var saveData = JsonUtility.FromJson<T>(json);
 
         return saveData;
+    }
+
+    public static void DeleteSave()
+    {
+        UpdateHighScore();
+        if (!File.Exists(path))
+            return;
+
+        File.Delete(path);
     }
 
     private static int GetHighScore()
@@ -74,12 +86,29 @@ public static class GameSaveLoad
 
         File.WriteAllText(highScorePath, highScore.ToString(), encodeType);
     }
-    public static void DeleteSave()
-    {
-        UpdateHighScore();
-        if (!File.Exists(path))
-            return;
 
-        File.Delete(path);
+    public static void SaveSettings(VolumeSectionHandle[] volumeSectionHandles)
+    {
+        var settingsToSave = new SettingsData();
+
+        foreach (var volumeSectionHandle in volumeSectionHandles)
+        {
+            AudioManager.Instance.ChangeVolumesOfType(volumeSectionHandle.type, volumeSectionHandle.sliderValue);
+            settingsToSave.settingsData.Add(new SettingData { type = volumeSectionHandle.type, volume = volumeSectionHandle.sliderValue });
+        }
+
+        var json = JsonUtility.ToJson(settingsToSave);
+        File.WriteAllText(settingsPath, json, encodeType);
     }
+
+    //public static List<SettingData> LoadSettings()
+    //{
+    //    if (!File.Exists(settingsPath))
+    //        return null;
+
+    //    var json = File.ReadAllText(path, encodeType);
+    //    var saveData = JsonUtility.FromJson<List<SettingData>>(json);
+
+    //    return saveData;
+    //}
 }

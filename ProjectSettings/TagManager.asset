@@ -11,6 +11,7 @@ TagManager:
   - Kill
   - Score
   - BoxesManager
+  - VolumeSection
   layers:
   - Default
   - TransparentFX
