@@ -1,5 +1,3 @@
-using System.Collections;
-using UnityEditor.Build;
 using UnityEngine;
 
 public class BallController : MonoBehaviour
@@ -35,6 +33,8 @@ public class BallController : MonoBehaviour
     private float speedPerDegree;
     private float pieceLength;
 
+    private bool hitThisFrame;
+
     void Start()
     {
         var size = DynamicGameSize.GetAppropriateSize(transform.localScale);
@@ -52,10 +52,13 @@ public class BallController : MonoBehaviour
         int pieces = 45;
         speedPerDegree = maxTotalSpeed / 2 / pieces;
         pieceLength = playerHalfSize / pieces;
+
+        hitThisFrame = false;
     }
 
     void FixedUpdate()
     {
+        hitThisFrame = false;
         transform.position = transform.position + _moveAmount;
     }
 
@@ -76,10 +79,14 @@ public class BallController : MonoBehaviour
 
     public void OnHit(Vector2 obsPos, Vector2 obsSize)
     {
+        //prevent hitting 2 boxes at one time and not bouncing 
+        if (hitThisFrame)
+            return;
         if (obsPos.y - obsSize.y / 2 <= transform.position.y && transform.position.y <= obsPos.y + obsSize.y / 2)
             _moveAmount.x = -moveAmount.x;
         else
             _moveAmount.y = -moveAmount.y;
+        hitThisFrame = true;
     }
 
     public void DestroyOnTriggerLeft()

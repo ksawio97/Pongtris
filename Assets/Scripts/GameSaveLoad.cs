@@ -1,8 +1,6 @@
 using UnityEngine;
 using System.IO;
 using System.Text;
-using System.Collections.Generic;
-using UnityEngine.UI;
 
 public static class GameSaveLoad
 {
@@ -100,15 +98,4 @@ public static class GameSaveLoad
         var json = JsonUtility.ToJson(settingsToSave);
         File.WriteAllText(settingsPath, json, encodeType);
     }
-
-    //public static List<SettingData> LoadSettings()
-    //{
-    //    if (!File.Exists(settingsPath))
-    //        return null;
-
-    //    var json = File.ReadAllText(path, encodeType);
-    //    var saveData = JsonUtility.FromJson<List<SettingData>>(json);
-
-    //    return saveData;
-    //}
 }

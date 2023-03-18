@@ -23,8 +23,6 @@ public class VolumeSectionHandle : MonoBehaviour
     {
         slider = GetComponentInChildren<Slider>();
     }
-    //TO DO Add sounds to slider
-    //TO DO Add saving to SaveData settings
 
     public void LoadSliderValue(float volume)
     {

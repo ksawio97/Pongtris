@@ -41,16 +41,16 @@ public class CollisionController : MonoBehaviour
             if (diffrence.x == 0)
                 closestPoint.x += 0;
             else if (diffrence.x < 0)
-                closestPoint.x += transform.localScale.x / 2;
+                closestPoint.x += transform.localScale.x / 2 * 1.5f;
             else
-                closestPoint.x -= transform.localScale.x / 2;
+                closestPoint.x -= transform.localScale.x / 2 * 1.5f;
 
             if (diffrence.y == 0)
                 closestPoint.y += 0;
             else if (diffrence.y < 0)
-                closestPoint.y += transform.localScale.y / 2;
+                closestPoint.y += transform.localScale.y / 2 * 1.5f;
             else
-                closestPoint.y -= transform.localScale.y / 2;
+                closestPoint.y -= transform.localScale.y / 2 * 1.5f;
 
             return closestPoint;
         }
